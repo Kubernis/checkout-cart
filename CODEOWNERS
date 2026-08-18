@@ -1,3 +1,12 @@
-# Checkout owns this service end to end — the code and what it deploys.
-*           @Kubernis/global-infra
-/deploy/    @Kubernis/global-infra
+# Checkout owns this service — the code and what it deploys.
+#
+# The platform team is deliberately NOT here. They own the standard the tenant
+# is built from, not what this team chooses to run inside it. Review authority
+# follows ownership: whoever is accountable for the service reviews changes to
+# it.
+*           @Kubernis/checkout
+
+# deploy/ is applied to a live namespace by ArgoCD on merge, so it is called out
+# separately — same reviewers, but the PR template asks the author to say when
+# they have touched it.
+/deploy/    @Kubernis/checkout
