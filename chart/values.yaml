@@ -1,0 +1,28 @@
+# Defaults. Every environment overrides what it needs in envs/<stage>/values.yaml
+# and inherits the rest — so a change to the shape of the deployment is made once,
+# here, and reaches every environment.
+
+# Identity. Set per environment; the ApplicationSet also reads these to decide
+# which ArgoCD project and namespace the Application belongs to.
+service: cart
+team: checkout
+environment: ""
+
+replicas: 1
+
+image:
+  repository: nginxinc/nginx-unprivileged
+  # Never "latest" — an unpinned tag makes the running version unknowable, and
+  # the production-readiness scorecard checks for it.
+  tag: "1.27-alpine"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+# The tenant LimitRange would supply defaults, but a service states its own —
+# and the namespace ResourceQuota rejects any pod that omits requests entirely.

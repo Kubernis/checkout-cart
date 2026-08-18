@@ -2,19 +2,35 @@
 
 Checkout's cart API. Owned by `checkout`.
 
-## Where things are
+## Layout
 
-    port.yml    service identity — Port builds the catalog entry from this
-    deploy/     Kubernetes manifests, deployed by ArgoCD
+    port.yml       service identity — Port builds the catalog entry from this
+    chart/         the Helm chart: one definition of what this service looks like
+    envs/          one values file per environment
 
-## How this gets deployed
+## Deploying to a new environment
 
-Nothing here configures ArgoCD. The platform's fleet repo holds a declaration
-naming this repo, this path and the target environment; an ApplicationSet turns
-that into an Application inside the tenant's own ArgoCD project.
+Add a directory under `envs/`:
 
-That project only permits `Kubernis/checkout-*` as a source and only permits
-`checkout-dev` as a destination — so these manifests cannot reach another team's
-namespace even by accident.
+    envs/prod/values.yaml
 
-We own what is inside `deploy/`. The platform owns where it lands.
+        service: cart
+        team: checkout
+        environment: checkout-prod
+        replicas: 4
+
+Open a pull request. On merge the platform's ApplicationSet notices the new
+file and creates an ArgoCD Application for it.
+
+The environment named must already exist — request it from Port's self-service
+hub first. It is what created the namespace, its quota and its ArgoCD project.
+
+## What we own, and what we do not
+
+We own `chart/` and `envs/` — how this service is shaped and sized in each
+environment.
+
+We do not own where it lands. The ArgoCD project for our environment only
+permits `Kubernis/checkout-*` as a source and only permits that one namespace
+as a destination. These manifests cannot reach another team's namespace, even
+by mistake.
