@@ -1,0 +1,3 @@
+# Checkout owns this service end to end — the code and what it deploys.
+*           @Kubernis/global-infra
+/deploy/    @Kubernis/global-infra
