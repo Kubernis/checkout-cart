@@ -57,6 +57,10 @@ spec:
               mountPath: /var/cache/nginx
             - name: run
               mountPath: /var/run
+            # nginx writes proxy temp files here at startup; with a read-only
+            # root filesystem it needs somewhere real to put them.
+            - name: tmp
+              mountPath: /tmp
           readinessProbe:
             httpGet: { path: /, port: http }
             initialDelaySeconds: 3
@@ -67,4 +71,6 @@ spec:
         - name: cache
           emptyDir: {}
         - name: run
+          emptyDir: {}
+        - name: tmp
           emptyDir: {}
