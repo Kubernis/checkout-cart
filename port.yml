@@ -1,0 +1,9 @@
+# Service identity. Port creates the catalog entry from this file — there is no
+# UI step and no separate registry to keep in sync. The team that owns the code
+# declares what it owns, in a pull request, next to the thing being described.
+- identifier: cart
+  title: Cart
+  blueprint: service
+  team: checkout
+  properties:
+    criticality: high
